@@ -34,6 +34,6 @@ def run_hp_search_optuna(trainer: "Trainer", n_trials: int, direction: str, **kw
     timeout = kwargs.pop("timeout", None)
     n_jobs = kwargs.pop("n_jobs", 1)
     study = optuna.create_study(direction=direction, **kwargs)
-    study.optimize(_objective, n_trials=n_trials, timeout=timeout, n_jobs=n_jobs)
+    study.optimize(_objective, n_trials=n_trials, timeout=timeout, n_jobs=n_jobs, gc_after_trial=True)
     best_trial = study.best_trial
     return BestRun(str(best_trial.number), best_trial.value, best_trial.params, study)

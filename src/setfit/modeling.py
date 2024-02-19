@@ -35,6 +35,7 @@ from . import logging
 from .data import SetFitDataset
 from .model_card import SetFitModelCardData, generate_model_card
 from .utils import set_docstring
+from .augmentations import augment_embeddings
 
 
 logging.set_verbosity_info()
@@ -258,6 +259,8 @@ class SetFitModel(PyTorchModelHubMixin):
         l2_weight: Optional[float] = None,
         max_length: Optional[int] = None,
         show_progress_bar: bool = True,
+        augment: Optional[bool] = False,
+        augment_frac: Optional[float] = 0.0
     ) -> None:
         """Train the classifier head, only used if a differentiable PyTorch head is used.
 
@@ -316,6 +319,10 @@ class SetFitModel(PyTorchModelHubMixin):
                 self.unfreeze("body")
         else:  # train with sklearn
             embeddings = self.model_body.encode(x_train, normalize_embeddings=self.normalize_embeddings)
+
+            if augment:
+                embeddings, y_train = augment_embeddings(embeddings, y_train, fraction=augment_frac)
+
             self.model_head.fit(embeddings, y_train)
             if self.labels is None and self.multi_target_strategy is None:
                 # Try to set the labels based on the head classes, if they exist

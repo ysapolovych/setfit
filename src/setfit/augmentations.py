@@ -9,8 +9,13 @@ def create_index_dict(lst):
 
 def augment_embeddings(embeddings: np.ndarray, labels: list[str | list[int]],
                        fraction: float = 0.5):
+    if fraction > 1:
+        replace = True
+    else:
+        replace = False
+
     label_str_list = [str(t) for t in labels]
-    label_dict = {str(t):t for t in labels}
+    label_dict = {str(t): t for t in labels}
 
     label_indices_dict = create_index_dict(label_str_list)
 
@@ -29,15 +34,10 @@ def augment_embeddings(embeddings: np.ndarray, labels: list[str | list[int]],
         num_combinations = int(round(num_arrays * fraction))
 
         # randomly select arrays for combinations
-        selected_indices = np.random.choice(num_arrays, (num_combinations, 2), replace=False)
+        selected_indices = np.random.choice(num_arrays, (num_combinations, 2), replace=replace)
 
         # generate random coefficients
         coefficients = np.random.rand(num_combinations)
-        print(coefficients)
-
-        # normalize coefficients
-        coefficients /= np.sum(coefficients)
-        print(coefficients)
 
         # Perform linear combinations
         linear_combinations = np.zeros((num_combinations, label_embeddings.shape[1]))
@@ -57,6 +57,6 @@ def augment_embeddings(embeddings: np.ndarray, labels: list[str | list[int]],
     all_linear_combinations = np.concatenate(all_linear_combinations, axis=0)
 
     embeddings = np.concatenate([embeddings, all_linear_combinations], axis=0)
-    labels = labels.extend(all_new_labels)
+    labels.extend(all_new_labels)
 
     return embeddings, labels

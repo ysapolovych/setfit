@@ -260,7 +260,8 @@ class SetFitModel(PyTorchModelHubMixin):
         max_length: Optional[int] = None,
         show_progress_bar: bool = True,
         augment: Optional[bool] = False,
-        augment_frac: Optional[float] = 0.0
+        max_combinations: Optional[int] = -1,
+        shuffle_augmentations: bool = True
     ) -> None:
         """Train the classifier head, only used if a differentiable PyTorch head is used.
 
@@ -321,7 +322,8 @@ class SetFitModel(PyTorchModelHubMixin):
             embeddings = self.model_body.encode(x_train, normalize_embeddings=self.normalize_embeddings)
 
             if augment:
-                embeddings, y_train = augment_embeddings(embeddings, y_train, fraction=augment_frac)
+                embeddings, y_train = augment_embeddings(embeddings, y_train, max_combinations=max_combinations,
+                                                         shuffle=shuffle_augmentations)
 
             self.model_head.fit(embeddings, y_train)
             if self.labels is None and self.multi_target_strategy is None:

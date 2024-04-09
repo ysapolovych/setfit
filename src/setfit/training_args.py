@@ -223,7 +223,8 @@ class TrainingArguments:
 
     # augmentation params
     augment: Optional[bool] = False
-    augment_frac: Optional[float] = 0.0
+    max_combinations: Optional[int] = -1
+    shuffle_augmentations: Optional[bool] = True
 
     def __post_init__(self) -> None:
         # Set `self.embedding_batch_size` and `self.classifier_batch_size` using values from `self.batch_size`

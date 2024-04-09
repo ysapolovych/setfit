@@ -796,7 +796,8 @@ class Trainer(ColumnMappingMixin):
             show_progress_bar=args.show_progress_bar,
             end_to_end=args.end_to_end,
             augment=args.augment,
-            augment_frac=args.augment_frac
+            max_combinations=args.max_combinations,
+            shuffle_augmentations=args.shuffle_augmentations
         )
 
     def evaluate(self, dataset: Optional[Dataset] = None, metric_key_prefix: str = "test") -> Dict[str, float]:

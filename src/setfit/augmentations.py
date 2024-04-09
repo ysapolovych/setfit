@@ -9,10 +9,6 @@ def create_index_dict(lst):
 
 def augment_embeddings(embeddings: np.ndarray, labels: list[str | list[int]],
                        max_combinations: int = -1):
-    if fraction > 1:
-        replace = True
-    else:
-        replace = False
 
     label_str_list = [str(t) for t in labels]
     label_dict = {str(t): t for t in labels}

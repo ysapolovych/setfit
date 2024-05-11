@@ -5,9 +5,9 @@ from tokenize_uk import tokenize_text, tokenize_sents
 from copy import deepcopy
 
 
-def augment_text(x_train: list[str], y_train: list[str], x_add: list[str], y_add: list[str], eda: bool = True,
-                 tfidf: bool = True, sent_swap: bool = True, tfidf_models: dict = None, n: int = 2,
-                 max_word_swaps: int = 6, preserve_original: bool = True):
+def augment_text(x_train: list[str], y_train: list[str], x_add: list[str] = None, y_add: list[str] = None,
+                 eda: bool = True, tfidf: bool = True, sent_swap: bool = True, tfidf_models: dict = None,
+                 n: int = 2, max_word_swaps: int = 6, preserve_original: bool = True, **kwargs):
     x = deepcopy(x_train)
     y = deepcopy(y_train)
 
@@ -56,7 +56,7 @@ def augment_text(x_train: list[str], y_train: list[str], x_add: list[str], y_add
         new_texts = []
         for t, lbl in zip(x, y):
             new_t = tf_idf_replacement(t, aug=tfidf_models[lbl])
-            new_texts.append(new_t)
+            new_texts.append(new_t[0])
 
         x = new_texts
 

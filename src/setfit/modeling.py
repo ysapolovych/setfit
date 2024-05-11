@@ -261,7 +261,9 @@ class SetFitModel(PyTorchModelHubMixin):
         show_progress_bar: bool = True,
         augment: Optional[bool] = False,
         max_combinations: Optional[int] = -1,
-        shuffle_augmentations: bool = True
+        shuffle_augmentations: bool = True,
+        x_aug: List[str] = None,
+        y_aug: Union[List[int], List[str]] = None
     ) -> None:
         """Train the classifier head, only used if a differentiable PyTorch head is used.
 
@@ -319,6 +321,10 @@ class SetFitModel(PyTorchModelHubMixin):
             if not end_to_end:
                 self.unfreeze("body")
         else:  # train with sklearn
+            if x_aug is not None and y_aug is not None:
+                x_train.extend(x_aug)
+                y_train.extend(y_aug)
+
             embeddings = self.model_body.encode(x_train, normalize_embeddings=self.normalize_embeddings)
 
             if augment:

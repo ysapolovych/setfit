@@ -225,6 +225,8 @@ class TrainingArguments:
     augment: Optional[bool] = False
     max_combinations: Optional[int] = -1
     shuffle_augmentations: Optional[bool] = True
+    x_aug: Optional[List[str]] = None
+    y_aug: Optional[Union[List[str], List[int]]] = None
 
     def __post_init__(self) -> None:
         # Set `self.embedding_batch_size` and `self.classifier_batch_size` using values from `self.batch_size`

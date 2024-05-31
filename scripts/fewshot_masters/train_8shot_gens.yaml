@@ -1,0 +1,25 @@
+---
+add_prob_threshold: 0.7
+add_train: 0
+export_dir: ''
+generation: 3
+in_dir:
+out_dir:
+model_name: intfloat/multilingual-e5-small
+model_save_dir:
+n_shot: 8
+next_add_train: 8
+report_dir:
+train_args:
+  augment: false
+  batch_size: 8
+  body_learning_rate: 1.9268958879229764e-05
+  evaluation_strategy: epoch
+  load_best_model_at_end: true
+  max_combinations: -1
+  num_epochs: 3
+  report_to: wandb
+  sampling_strategy: unique
+  save_strategy: epoch
+  seed: 99
+  shuffle_augmentations: true

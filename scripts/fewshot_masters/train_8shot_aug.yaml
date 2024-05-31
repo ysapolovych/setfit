@@ -1,0 +1,43 @@
+---
+add_prob_threshold: 0.7
+add_train: 8
+export_dir: ''
+generation: 1
+in_dir:
+out_dir:
+model_name: intfloat/multilingual-e5-small
+model_save_dir:
+n_shot: 8
+next_add_train: 12
+report_dir:
+train_args:
+  batch_size: [8, 2]
+  body_learning_rate: 1.9268958879229764e-05
+  evaluation_strategy: epoch
+  load_best_model_at_end: true
+  num_epochs: [3, 24]
+  report_to: wandb
+  sampling_strategy: unique
+  save_strategy: epoch
+  seed: 99
+head_params:
+  out_features: 5
+  in_features: 384
+  device: 'cuda:0'
+  multitarget: False
+head_train_args:
+  head_learning_rate: 0.0004004952725014946
+  l2_weight: 0.049375525606353256
+text_augment_params:
+  backtranslation: true
+  lang: eng
+  eda: True
+  tfidf: True
+  sent_swap: False
+  n: 2
+  max_word_swaps: 5
+emb_aug_params:
+  use_mixup: True
+  use_cutmix: False
+  alpha: 0.141416
+  emb_aug_multipl: 3

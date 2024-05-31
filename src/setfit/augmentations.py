@@ -74,7 +74,8 @@ def mixup(x, y, alpha, use_cuda=True):
     num_examples = x.size()[0]
 
     if use_cuda:
-        index = torch.randperm(num_examples).cuda()
+        index = torch.randperm(num_examples).cuda() # generator=torch.Generator().manual_seed(np.random.randint(0, 100000))
+        #torch.randperm(num_examples).cuda()
     else:
         index = torch.randperm(num_examples)
 
@@ -127,7 +128,7 @@ def cutmix(x, y, alpha):
         lam = np.random.beta(alpha, alpha)
     else:
         lam = 1
-    rand_index = torch.randperm(len(x))
+    rand_index = torch.randperm(len(x)) #generator=torch.Generator().manual_seed(np.random.randint(0, 100000)
     target_a = y
     target_b = y[rand_index]
 
@@ -188,3 +189,22 @@ def cutmix_np(x, y, alpha, output_tensor: bool = True, device: str = 'cuda:0'):
         return torch.from_numpy(x_aug).to(device), torch.from_numpy(y_aug).to(device)
 
     return x_aug, y_aug
+
+
+def emb_aug_np_batch(x, y, n, alpha, use_mixup: bool, use_cutmix: bool):
+    total_n = x.shape[0] * n
+
+    pair_indices = np.random.choice(x.shape[0], size=(int(n*x.shape[0]/2), 2), replace=True)
+
+    all_aug_x = []
+    all_aug_y = []
+
+    for index in pair_indices:
+        if use_mixup:
+            aug_x, aug_y = mixup_np(x[[index[0], index[1]], :], y[[index[0], index[1]], :], alpha)
+        elif use_cutmix:
+            aug_x, aug_y = cutmix_np(x[[index[0], index[1]], :], y[[index[0], index[1]], :], alpha)
+        all_aug_x.append(aug_x)
+        all_aug_y.append(aug_y)
+
+    return torch.concat(all_aug_x), torch.concat(all_aug_y)
